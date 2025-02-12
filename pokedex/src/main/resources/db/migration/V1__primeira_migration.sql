@@ -34,7 +34,7 @@ CREATE TABLE Pokemon_Ataque (
     id_ataq integer,
     Primary Key(id_pok, id_ataq),
     Foreign Key (id_pok) REFERENCES Pokemon(id_pok),
-    Foreign Key (id_ataq) REFERENCES Ataques(id_ataq)
+    Foreign Key (id_ataq) REFERENCES Ataque(id_ataq)
 );
 
 CREATE TABLE Regiao (
