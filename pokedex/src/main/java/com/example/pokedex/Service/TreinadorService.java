@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import com.example.pokedex.Entity.Treinador;
 import com.example.pokedex.Interface.TreinadorRepository;
@@ -34,7 +35,7 @@ public class TreinadorService {
         return treinadores;
     }
 
-    public Treinador editarTreinador(Long treinaId, String treinaNome, String cidade) {
+    public Treinador editarTreinador(@PathVariable Long treinaId, String treinaNome, String cidade) {
         Optional<Treinador> treinadorExistente = treinadorRepository.findById(treinaId);
         
         if(treinadorExistente.isPresent()) {
