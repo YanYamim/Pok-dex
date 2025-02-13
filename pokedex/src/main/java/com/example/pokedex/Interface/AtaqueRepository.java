@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.example.pokedex.Entity.Ataque;
 
 @Repository
-public interface AtaqueRepository extends JpaRepository<Long, Ataque> {
+public interface AtaqueRepository extends JpaRepository<Ataque, Long> {
     
 }
