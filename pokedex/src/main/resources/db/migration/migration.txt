@@ -26,6 +26,7 @@ CREATE TABLE Ataque (
     nome_ataq varchar(50) NOT NULL,
     tipo_ataq varchar(20),
     dano integer,
+    pp integer,
     precisao integer
 );
 

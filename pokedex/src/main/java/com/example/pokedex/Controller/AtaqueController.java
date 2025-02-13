@@ -28,7 +28,7 @@ public class AtaqueController {
 
     @PostMapping("registrar")
     public ResponseEntity<Ataque> registrarAtaque(@RequestBody Ataque dados) {
-        Ataque ataqueSalvo = ataqueService.registrarAtaque(dados.getAtaqNome(), dados.getAtaqTipo(), dados.getDano(), dados.getPrecisao());
+        Ataque ataqueSalvo = ataqueService.registrarAtaque(dados.getAtaqNome(), dados.getAtaqTipo(), dados.getDano(), dados.getPrecisao(), dados.getPp());
         return ResponseEntity.ok(ataqueSalvo);
     }
 
@@ -40,7 +40,7 @@ public class AtaqueController {
 
     @PutMapping("editar")
     public ResponseEntity<Ataque> editarAtaque(@PathVariable("id") Long ataqId, @RequestBody Ataque ataque) {
-        Ataque ataqueEditado = ataqueService.editarAtaque(ataqId, ataque.getAtaqNome(), ataque.getAtaqTipo(), ataque.getDano(), ataque.getPrecisao());
+        Ataque ataqueEditado = ataqueService.editarAtaque(ataqId, ataque.getAtaqNome(), ataque.getAtaqTipo(), ataque.getDano(), ataque.getPrecisao(), ataque.getPp());
         return ResponseEntity.ok(ataqueEditado);
     }
 }

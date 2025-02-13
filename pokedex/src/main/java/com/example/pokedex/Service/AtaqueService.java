@@ -22,17 +22,18 @@ public class AtaqueService {
         this.ataqueRepository = ataqueRepository;
     }
 
-    public Ataque registrarAtaque(String ataqNome, String ataqTipo, int ataqDano, int ataqPrecisao) {
+    public Ataque registrarAtaque(String ataqNome, String ataqTipo, int ataqDano, int ataqPrecisao, int pp) {
         Ataque novoAtaque = new Ataque();
         novoAtaque.setAtaqNome(ataqNome);
         novoAtaque.setAtaqTipo(ataqTipo);
         novoAtaque.setDano(ataqDano);
         novoAtaque.setPrecisao(ataqPrecisao);
+        novoAtaque.setPp(pp);
         Ataque ataqSalvo = ataqueRepository.save(novoAtaque);
         return ataqSalvo;
     }
 
-    public Ataque editarAtaque(@PathVariable Long ataqId, String ataqNome, String ataqTipo, int ataqDano, int ataqPrecisao) {
+    public Ataque editarAtaque(@PathVariable Long ataqId, String ataqNome, String ataqTipo, int ataqDano, int ataqPrecisao, int pp) {
         Optional<Ataque> ataqExistente = ataqueRepository.findById(ataqId);
 
         if(ataqExistente.isPresent()) {
@@ -41,6 +42,7 @@ public class AtaqueService {
             ataqParaEditar.setAtaqTipo(ataqTipo);
             ataqParaEditar.setDano(ataqDano);
             ataqParaEditar.setPrecisao(ataqPrecisao);
+            ataqParaEditar.setPp(pp);
 
             return ataqueRepository.save(ataqParaEditar);
         }

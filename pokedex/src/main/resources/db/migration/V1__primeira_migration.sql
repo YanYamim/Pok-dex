@@ -26,7 +26,8 @@ CREATE TABLE Ataque (
     nome_ataq varchar(50) NOT NULL,
     tipo_ataq varchar(20),
     dano integer,
-    precisao integer
+    precisao integer,
+    pp integer
 );
 
 CREATE TABLE Pokemon_Ataque (

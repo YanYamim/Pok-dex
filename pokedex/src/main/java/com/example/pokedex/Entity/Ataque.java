@@ -41,6 +41,9 @@ public class Ataque {
     @Column(name = "precisao")
     private int precisao;
 
+    @Column(name = "pp")
+    private int pp;
+
     @ManyToMany(mappedBy = "ataques")
     @JsonIgnore
     List<Pokemon> pokemons;
