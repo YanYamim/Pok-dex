@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.example.pokedex.Entity.Ataque;
 import com.example.pokedex.Interface.AtaqueRepository;
-
-import jakarta.persistence.EntityNotFoundException;
+import com.example.pokedex.err.InternalErrorException;
+import com.example.pokedex.err.NotFoundException;
 
 @Service
 public class AtaqueService {
@@ -23,35 +23,46 @@ public class AtaqueService {
     }
 
     public Ataque registrarAtaque(String ataqNome, String ataqTipo, int ataqDano, int ataqPrecisao, int pp) {
-        Ataque novoAtaque = new Ataque();
-        novoAtaque.setAtaqNome(ataqNome);
-        novoAtaque.setAtaqTipo(ataqTipo);
-        novoAtaque.setDano(ataqDano);
-        novoAtaque.setPrecisao(ataqPrecisao);
-        novoAtaque.setPp(pp);
-        Ataque ataqSalvo = ataqueRepository.save(novoAtaque);
-        return ataqSalvo;
+        try {
+
+            Ataque novoAtaque = new Ataque();
+            novoAtaque.setAtaqNome(ataqNome);
+            novoAtaque.setAtaqTipo(ataqTipo);
+            novoAtaque.setDano(ataqDano);
+            novoAtaque.setPrecisao(ataqPrecisao);
+            novoAtaque.setPp(pp);
+            Ataque ataqSalvo = ataqueRepository.save(novoAtaque);
+            return ataqSalvo;
+        } catch(Exception e) {
+            throw new InternalErrorException("Erro ao registrar Ataque " + e.getMessage());
+        }
     }
 
     public Ataque editarAtaque(@PathVariable Long ataqId, String ataqNome, String ataqTipo, int ataqDano, int ataqPrecisao, int pp) {
-        Optional<Ataque> ataqExistente = ataqueRepository.findById(ataqId);
-
-        if(ataqExistente.isPresent()) {
-            Ataque ataqParaEditar = ataqExistente.get();
-            ataqParaEditar.setAtaqNome(ataqNome);
-            ataqParaEditar.setAtaqTipo(ataqTipo);
-            ataqParaEditar.setDano(ataqDano);
-            ataqParaEditar.setPrecisao(ataqPrecisao);
-            ataqParaEditar.setPp(pp);
-
-            return ataqueRepository.save(ataqParaEditar);
+        
+        try{
+            Optional<Ataque> ataqExistente = ataqueRepository.findById(ataqId);
+            if(ataqExistente.isPresent()) {
+                Ataque ataqParaEditar = ataqExistente.get();
+                ataqParaEditar.setAtaqNome(ataqNome);
+                ataqParaEditar.setAtaqTipo(ataqTipo);
+                ataqParaEditar.setDano(ataqDano);
+                ataqParaEditar.setPrecisao(ataqPrecisao);
+                ataqParaEditar.setPp(pp);
+                
+                return ataqueRepository.save(ataqParaEditar);
+            }   
+            throw new NotFoundException("Ataque não encontrado" + ataqId);
+        } catch(Exception e) {
+            throw new InternalErrorException("Erro ao editar Ataque de Id " + ataqId + e.getMessage());
         }
-
-        throw new EntityNotFoundException("Ataque não encontrado" + ataqId);
     }
 
     public List<Ataque> listarAtaques() {
-        List<Ataque> ataques = ataqueRepository.findAll();
-        return ataques;
+        try {
+            return ataqueRepository.findAll();
+        } catch(Exception e) {
+            throw new InternalErrorException("Erro ao listar Pokémons");
+        }
     }
 }

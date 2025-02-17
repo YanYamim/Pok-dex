@@ -38,7 +38,7 @@ public class RegiaoController {
         return ResponseEntity.ok(regioes);
     }
 
-    @PutMapping("editar")
+    @PutMapping("editar/{id}")
     public ResponseEntity<Regiao> editarRegiao(@PathVariable("id") Long regId, @RequestBody Regiao regiao) {
         Regiao regiaoEditada = regiaoService.editarRegiao(regId, regiao.getRegNome());
         return ResponseEntity.ok(regiaoEditada);

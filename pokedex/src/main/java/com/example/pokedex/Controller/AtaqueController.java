@@ -38,7 +38,7 @@ public class AtaqueController {
         return ResponseEntity.ok(ataques);
     }
 
-    @PutMapping("editar")
+    @PutMapping("editar/{id}")
     public ResponseEntity<Ataque> editarAtaque(@PathVariable("id") Long ataqId, @RequestBody Ataque ataque) {
         Ataque ataqueEditado = ataqueService.editarAtaque(ataqId, ataque.getAtaqNome(), ataque.getAtaqTipo(), ataque.getDano(), ataque.getPrecisao(), ataque.getPp());
         return ResponseEntity.ok(ataqueEditado);

@@ -38,7 +38,7 @@ public class PokemonController {
         return ResponseEntity.ok(pokemons);
     }
 
-    @PutMapping("editar")
+    @PutMapping("editar/{id}")
     public ResponseEntity<Pokemon> editarPokemon(@PathVariable("id") Long pokeId, @RequestBody Pokemon pokemon) {
         Pokemon pokemonEditado = pokemonService.editarPokemon(pokeId, pokemon.getPokeNome(), pokemon.getPokeTipo(), pokemon.getPokeTamanho(), pokemon.getPokePeso(), pokemon.getPokeBioma());
         return ResponseEntity.ok(pokemonEditado);

@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.example.pokedex.Entity.Regiao;
 import com.example.pokedex.Interface.RegiaoRepository;
-
-import jakarta.persistence.EntityNotFoundException;
+import com.example.pokedex.err.InternalErrorException;
+import com.example.pokedex.err.NotFoundException;
 
 @Service
 public class RegiaoService {
@@ -23,26 +23,39 @@ public class RegiaoService {
     }
 
     public Regiao registrarRegiao(String regNome) {
-        Regiao novaRegiao = new Regiao();
-        novaRegiao.setRegNome(regNome);
-        Regiao regSalva = regiaoRepository.save(novaRegiao);
-        return regSalva;
+        try {
+
+            Regiao novaRegiao = new Regiao();
+            novaRegiao.setRegNome(regNome);
+            Regiao regSalva = regiaoRepository.save(novaRegiao);
+            return regSalva;
+        } catch(Exception e) {
+            throw new InternalErrorException("Erro ao registrar região " + e.getMessage());
+        }
     }
 
     public Regiao editarRegiao(@PathVariable Long regId, String regNome) {
-        Optional<Regiao> regExistente = regiaoRepository.findById(regId);
+        try {
 
-        if (regExistente.isPresent()) {
-            Regiao regParaEditar = regExistente.get();
-            regParaEditar.setRegNome(regNome);
-            return regiaoRepository.save(regParaEditar);
+            Optional<Regiao> regExistente = regiaoRepository.findById(regId);
+            
+            if (regExistente.isPresent()) {
+                Regiao regParaEditar = regExistente.get();
+                regParaEditar.setRegNome(regNome);
+                return regiaoRepository.save(regParaEditar);
+            }
+            throw new NotFoundException("Região não encontrada" + regId);
+
+        } catch(Exception e) {
+            throw new InternalErrorException("Erro ao editar região de Id" + regId + e.getMessage());
         }
-
-        throw new EntityNotFoundException("Região não encontrada" + regId);
     }
 
     public List<Regiao> listarRegioes() {
-        List<Regiao> regioes = regiaoRepository.findAll();
-        return regioes;
+        try{
+            return regiaoRepository.findAll();
+        } catch(Exception e) {
+            throw new InternalErrorException("Erro ao listar regiões");
+        }
     }
 }

@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.example.pokedex.Entity.Pokemon;
 import com.example.pokedex.Interface.PokemonRepository;
-
-import jakarta.persistence.EntityNotFoundException;
+import com.example.pokedex.err.InternalErrorException;
+import com.example.pokedex.err.NotFoundException;
 
 @Service
 public class PokemonService {
@@ -23,34 +23,45 @@ public class PokemonService {
     }
 
     public Pokemon registrarPokemon(String pokeNome, String pokeTipo, double pokeTamanho, double pokePeso, String pokeBioma) {
-        Pokemon novoPokemon = new Pokemon();
-        novoPokemon.setPokeNome(pokeNome);
-        novoPokemon.setPokeTipo(pokeTipo);
-        novoPokemon.setPokeTamanho(pokeTamanho);
-        novoPokemon.setPokePeso(pokePeso);
-        novoPokemon.setPokeBioma(pokeBioma);
-        Pokemon pokemonSalvo = pokemonRepository.save(novoPokemon);
-        return pokemonSalvo;
+        try {
+            Pokemon novoPokemon = new Pokemon();
+            novoPokemon.setPokeNome(pokeNome);
+            novoPokemon.setPokeTipo(pokeTipo);
+            novoPokemon.setPokeTamanho(pokeTamanho);
+            novoPokemon.setPokePeso(pokePeso);
+            novoPokemon.setPokeBioma(pokeBioma);
+            Pokemon pokemonSalvo = pokemonRepository.save(novoPokemon);
+            return pokemonSalvo;
+        } catch(Exception e) {
+            throw new InternalErrorException("Erro ao registrar Pokémon: " + e.getMessage());
+        }
     }
 
     public List<Pokemon> listarPokemons() {
-        List<Pokemon> pokemons = pokemonRepository.findAll();
-        return pokemons;
+        try{ 
+            return pokemonRepository.findAll();
+        } catch(Exception e) {
+            throw new InternalErrorException("Erro ao listar Pokémons" + e.getMessage());
+        }
     }
 
     public Pokemon editarPokemon(@PathVariable Long pokeId, String pokeNome, String pokeTipo, double pokeTamanho, double pokePeso, String pokeBioma) {
-        Optional<Pokemon> pokemonExistente = pokemonRepository.findById(pokeId);
+        try {
+            Optional<Pokemon> pokemonExistente = pokemonRepository.findById(pokeId);
+            if(pokemonExistente.isPresent()) {
+                Pokemon pokemonParaEditar = pokemonExistente.get();
+                pokemonParaEditar.setPokeNome(pokeNome);
+                pokemonParaEditar.setPokeTipo(pokeTipo);
+                pokemonParaEditar.setPokeTamanho(pokeTamanho);
+                pokemonParaEditar.setPokePeso(pokePeso);
+                pokemonParaEditar.setPokeBioma(pokeBioma);
+                return pokemonRepository.save(pokemonParaEditar);
+            }
+            throw new NotFoundException("Pokémon de Id " + pokeId + "não encontrado");
 
-        if(pokemonExistente.isPresent()) {
-            Pokemon pokemonParaEditar = pokemonExistente.get();
-            pokemonParaEditar.setPokeNome(pokeNome);
-            pokemonParaEditar.setPokeTipo(pokeTipo);
-            pokemonParaEditar.setPokeTamanho(pokeTamanho);
-            pokemonParaEditar.setPokePeso(pokePeso);
-            pokemonParaEditar.setPokeBioma(pokeBioma);
-            return pokemonRepository.save(pokemonParaEditar);
+        } catch(Exception e) {
+            throw new InternalErrorException("Erro ao editar Pokémon" + e.getMessage());
         }
 
-        throw new EntityNotFoundException("Pokémon não encontrado" + pokeId);
     }
 }

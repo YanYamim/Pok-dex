@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.example.pokedex.Entity.Treinador;
 import com.example.pokedex.Interface.TreinadorRepository;
-
-import jakarta.persistence.EntityNotFoundException;
+import com.example.pokedex.err.InternalErrorException;
+import com.example.pokedex.err.NotFoundException;
 
 @Service
 public class TreinadorService {
@@ -23,28 +23,42 @@ public class TreinadorService {
     }
 
     public Treinador registrarTreinador(String treinaNome, String cidade) {
-        Treinador novoTreinador = new Treinador();
-        novoTreinador.setTreinaNome(treinaNome);
-        novoTreinador.setCidade(cidade);
-        Treinador treinadorSalvo = treinadorRepository.save(novoTreinador);
-        return treinadorSalvo;
+        try{
+
+            Treinador novoTreinador = new Treinador();
+            novoTreinador.setTreinaNome(treinaNome);
+            novoTreinador.setCidade(cidade);
+            Treinador treinadorSalvo = treinadorRepository.save(novoTreinador);
+            return treinadorSalvo;
+        } catch (Exception e) {
+            throw new InternalErrorException("Erro ao registrar Treinador");
+        }
     }
 
     public List<Treinador> listarTreinadores() {
-        List<Treinador> treinadores = treinadorRepository.findAll();
-        return treinadores;
+        try {
+            return treinadorRepository.findAll();
+
+        } catch(Exception e) {
+            throw new InternalErrorException("Erro ao listar Pokémons " + e.getMessage());
+        }
     }
 
     public Treinador editarTreinador(@PathVariable Long treinaId, String treinaNome, String cidade) {
-        Optional<Treinador> treinadorExistente = treinadorRepository.findById(treinaId);
-        
-        if(treinadorExistente.isPresent()) {
-            Treinador treinadorParaEditar = treinadorExistente.get();
-            treinadorParaEditar.setTreinaNome(treinaNome);
-            treinadorParaEditar.setCidade(cidade);
-            return treinadorRepository.save(treinadorParaEditar);
-        }
+        try {
 
-        throw new EntityNotFoundException("Treinador não encontrado" + treinaId);
+            Optional<Treinador> treinadorExistente = treinadorRepository.findById(treinaId);
+            
+            if(treinadorExistente.isPresent()) {
+                Treinador treinadorParaEditar = treinadorExistente.get();
+                treinadorParaEditar.setTreinaNome(treinaNome);
+                treinadorParaEditar.setCidade(cidade);
+                return treinadorRepository.save(treinadorParaEditar);
+            }   
+            throw new NotFoundException("Treinador não encontrado" + treinaId);
+
+        } catch(Exception e) {
+            throw new InternalErrorException("Erro ao editar treinador de Id " + treinaId + e.getMessage());
+        }
     }
 }

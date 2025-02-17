@@ -38,7 +38,7 @@ public class TreinadorController {
         return ResponseEntity.ok(treinadores);
     }
 
-    @PutMapping("editar")
+    @PutMapping("editar/{id}")
     public ResponseEntity<Treinador> editarTreinador(@PathVariable("id") Long treinaId, @RequestBody Treinador dados) {
         Treinador treinadorEditado = treinadorService.editarTreinador(treinaId, dados.getTreinaNome(), dados.getCidade());
         return ResponseEntity.ok(treinadorEditado);
