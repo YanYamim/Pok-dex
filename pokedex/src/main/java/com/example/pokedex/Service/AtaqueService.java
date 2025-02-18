@@ -65,4 +65,14 @@ public class AtaqueService {
             throw new NotFoundException("Pokémons não encontrados");
         }
     }
+
+    public Ataque listarAtaquePorId(Long ataqId) {
+        Optional<Ataque> ataquePorId = ataqueRepository.findById(ataqId);
+
+        if(ataquePorId.isPresent()) {
+            return ataquePorId.get();
+        }
+
+        throw new NotFoundException("Ataque de Id " + ataqId + "não encontrado");
+    }
 }

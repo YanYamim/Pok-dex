@@ -58,4 +58,14 @@ public class RegiaoService {
             throw new NotFoundException("Regiões não encontradas");
         }
     }
+
+    public Regiao listarRegiaoPorId(Long regId) {
+        Optional<Regiao> regiaoPorId = regiaoRepository.findById(regId);
+
+        if(regiaoPorId.isPresent()) {
+            return regiaoPorId.get();
+        }
+
+        throw new NotFoundException("Região de Id " + regId + "não encontrada");
+    }
 }

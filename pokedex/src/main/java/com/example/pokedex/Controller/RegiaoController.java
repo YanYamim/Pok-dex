@@ -38,6 +38,12 @@ public class RegiaoController {
         return ResponseEntity.ok(regioes);
     }
 
+    @GetMapping("listar/{id}")
+    public ResponseEntity<Regiao> listarRegiaoPorId(@PathVariable("id") Long regId) {
+        Regiao regiaoPorId = regiaoService.listarRegiaoPorId(regId);
+        return ResponseEntity.ok(regiaoPorId);
+    }
+
     @PutMapping("editar/{id}")
     public ResponseEntity<Regiao> editarRegiao(@PathVariable("id") Long regId, @RequestBody Regiao regiao) {
         Regiao regiaoEditada = regiaoService.editarRegiao(regId, regiao.getRegNome());

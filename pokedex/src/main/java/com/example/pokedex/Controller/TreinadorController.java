@@ -38,6 +38,12 @@ public class TreinadorController {
         return ResponseEntity.ok(treinadores);
     }
 
+    @GetMapping("listar/{id}")
+    public ResponseEntity<Treinador> listarTreinadorPorId(@PathVariable("id") Long treinaId) {
+        Treinador treinadorPorId = treinadorService.listarTreinadorPorId(treinaId);
+        return ResponseEntity.ok(treinadorPorId);
+    }
+
     @PutMapping("editar/{id}")
     public ResponseEntity<Treinador> editarTreinador(@PathVariable("id") Long treinaId, @RequestBody Treinador dados) {
         Treinador treinadorEditado = treinadorService.editarTreinador(treinaId, dados.getTreinaNome(), dados.getCidade());

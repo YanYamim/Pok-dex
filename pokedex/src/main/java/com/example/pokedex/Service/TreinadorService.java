@@ -45,6 +45,16 @@ public class TreinadorService {
         }
     }
 
+    public Treinador listarTreinadorPorId(Long treinaId) {
+        Optional<Treinador> treinadorPorId = treinadorRepository.findById(treinaId);
+
+        if(treinadorPorId.isPresent()) {
+            return treinadorPorId.get();
+        }
+
+        throw new NotFoundException("Treinador de Id " + treinaId + "não encontrado");
+    }
+
     public Treinador editarTreinador(@PathVariable Long treinaId, String treinaNome, String cidade) {
         try {
 
