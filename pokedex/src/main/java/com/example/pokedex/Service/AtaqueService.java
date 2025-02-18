@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.example.pokedex.Entity.Ataque;
 import com.example.pokedex.Interface.AtaqueRepository;
-import com.example.pokedex.err.InternalErrorException;
+import com.example.pokedex.err.BadRequestException;
 import com.example.pokedex.err.NotFoundException;
 
 @Service
@@ -34,7 +34,7 @@ public class AtaqueService {
             Ataque ataqSalvo = ataqueRepository.save(novoAtaque);
             return ataqSalvo;
         } catch(Exception e) {
-            throw new InternalErrorException("Erro ao registrar Ataque " + e.getMessage());
+            throw new BadRequestException("Erro na requisição de Ataque, o nome não pode ser nulo " + e.getMessage());
         }
     }
 
@@ -54,7 +54,7 @@ public class AtaqueService {
             }   
             throw new NotFoundException("Ataque não encontrado" + ataqId);
         } catch(Exception e) {
-            throw new InternalErrorException("Erro ao editar Ataque de Id " + ataqId + e.getMessage());
+            throw new BadRequestException("Erro na requisição de editar Ataque de Id " + ataqId + e.getMessage());
         }
     }
 
@@ -62,7 +62,7 @@ public class AtaqueService {
         try {
             return ataqueRepository.findAll();
         } catch(Exception e) {
-            throw new InternalErrorException("Erro ao listar Pokémons");
+            throw new NotFoundException("Pokémons não encontrados");
         }
     }
 }

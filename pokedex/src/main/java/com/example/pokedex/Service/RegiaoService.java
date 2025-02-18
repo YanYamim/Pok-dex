@@ -55,7 +55,7 @@ public class RegiaoService {
         try{
             return regiaoRepository.findAll();
         } catch(Exception e) {
-            throw new InternalErrorException("Erro ao listar regiões");
+            throw new NotFoundException("Regiões não encontradas");
         }
     }
 }

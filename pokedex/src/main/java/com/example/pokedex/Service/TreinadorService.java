@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.example.pokedex.Entity.Treinador;
 import com.example.pokedex.Interface.TreinadorRepository;
+import com.example.pokedex.err.BadRequestException;
 import com.example.pokedex.err.InternalErrorException;
 import com.example.pokedex.err.NotFoundException;
 
@@ -31,7 +32,7 @@ public class TreinadorService {
             Treinador treinadorSalvo = treinadorRepository.save(novoTreinador);
             return treinadorSalvo;
         } catch (Exception e) {
-            throw new InternalErrorException("Erro ao registrar Treinador");
+            throw new BadRequestException("Erro na requisição, o Treinador precisa ter um nome" + e.getMessage());
         }
     }
 
