@@ -28,7 +28,8 @@ public class PokemonController {
 
     @PostMapping("registrar")
     public ResponseEntity<Pokemon> registrarPokemon(@RequestBody Pokemon dados) {
-        Pokemon novoPokemon = pokemonService.registrarPokemon(dados.getPokeNome(), dados.getPokeTipo(), dados.getPokeTamanho(), dados.getPokePeso(), dados.getPokeBioma());
+        Pokemon novoPokemon = pokemonService.registrarPokemon(dados.getPokeNome(), dados.getPokeTipo(), dados.getPokeTamanho(), dados.getPokePeso()
+        ,dados.getPokeBioma(), dados.getAtaques(), dados.getTreinadores(), dados.getRegioes());
         return ResponseEntity.ok(novoPokemon);
     }
 
