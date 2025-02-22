@@ -1,0 +1,4 @@
+settings.py
+venv/
+.env
+__pychache__
