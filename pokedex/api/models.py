@@ -36,3 +36,24 @@ class Regiao(models.Model):
 
     def __str__(self):
         return f'Nome: {self.nome_regiao}'
+
+class Pokemon_Ataque(models.Model):
+    id_pokemon = models.ForeignKey('Pokemon', on_delete=models.CASCADE, related_name='pokemon_ataques')
+    id_ataque = models.ForeignKey('Ataque', on_delete=models.CASCADE, related_name='ataque_pokemons')
+
+    def __str__(self):
+        return f'Id Pokémon: {self.id_pokemon} | Id Ataque:  {self.id_ataque}'
+
+class Pokemon_Treinador(models.Model):
+    id_pokemon = models.ForeignKey('Pokemon', on_delete=models.CASCADE, related_name='pokemon_treinadores')
+    id_treinador = models.ForeignKey('Treinador', on_delete=models.CASCADE, related_name='treinador_pokemons')
+
+    def __str__(self):
+        return f'Id Pokémon: {self.id_pokemon} | Id Treinador:  {self.id_treinador}'
+
+class Pokemon_Regiao(models.Model):
+    id_pokemon = models.ForeignKey('Pokemon', on_delete=models.CASCADE, related_name='pokemon_regioes')
+    id_regiao = models.ForeignKey('Regiao', on_delete=models.CASCADE, related_name='regiao_pokemons')
+
+    def __str__(self):
+        return f'Id Pokémon: {self.id_pokemon} | Id Região:  {self.id_regiao}'
