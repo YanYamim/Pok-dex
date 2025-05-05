@@ -11,7 +11,7 @@ def listar_pokemons(request):
         pokemons = Pokemon.objects.all()
 
         serializer = PokemonSerializer(pokemons, many=True)
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
     
     return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -24,19 +24,22 @@ def registrar_pokemon(request):
 
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
     
     return Response(status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['PUT'])
 def editar_pokemon(request):
-    if request.method == 'PUT':
-        editar_pokemon = request.data
+    try:
+        id_pokemon = request.data.get('id_pokemon') 
+        pokemon = Pokemon.objects.get(id_pokemon=id_pokemon)
+    except Pokemon.DoesNotExist:
+        return Response({'error': 'Pokemon não encontrado.'}, status=status.HTTP_404_NOT_FOUND)       
 
-        serializer = PokemonSerializer(data=editar_pokemon)
+    serializer = PokemonSerializer(pokemon, data=editar_pokemon)
 
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer, data)
-        
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
